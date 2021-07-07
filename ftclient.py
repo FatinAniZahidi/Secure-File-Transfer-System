@@ -53,36 +53,40 @@ def main(self):
                 else:
                     print(login.decode())  #print welcome new user
 
-    def main(self):
+
         while 1:
-            file_name = input('Enter file name on server --> ')
-            self.s.send(file_name.encode())
+            #input requested file name
+            file_name = input('\t\n Please Enter File Name On Server : ')
+            if file_name == "xit":
+               sys.exit()
 
-            confirmation = self.s.recv(1024)
-            if confirmation.decode() == "file-doesn't-exist":
-                print("File doesn't exist on server.")
 
-                self.s.shutdown(socket.SHUT_RDWR)
-                self.s.close()
-                self.reconnect()
+            else:
+              self.sock.send(file_name.encode()) #client send file name to server
 
-            else:        
-                write_name = 'from_server '+file_name
+            confirm = self.sock.recv(1024)
+            if confirm.decode() == "No File!":
+                print("\t\nFile Is Not Available.\n")
+                print('----------------------------------------------------')
+                continue
+
+            else:   #if file exist in the server
+                write_name = file_name
                 if os.path.exists(write_name): os.remove(write_name)
 
+                #file download from the sever
                 with open(write_name,'wb') as file:
                     while 1:
-                        data = self.s.recv(1024)
+                        data = self.sock.recv(1024)
 
                         if not data:
                             break
 
                         file.write(data)
+                        break
 
-                print(file_name,'successfully downloaded.')
+                print('\t\nFile Successfully Download From The Server.\n')
+                print('---------------------------------------------------------')
+                continue
 
-                self.s.shutdown(socket.SHUT_RDWR)
-                self.s.close()
-                self.reconnect()
-                
 client = Client()
