@@ -4,6 +4,17 @@ import os
 import threading
 import socket
 import time
+import emoji
+
+class Server:
+    print('\n*******************************************************\n')
+    print('\tWelcome To Secure File Transfer System')
+    print('\n\t\tMade with Python\t\t')
+    txt = emoji.emojize(":snake:")
+    x = txt.center(48," ")
+    print(x)
+    print('\n*******************************************************\n')
+    print('SERVER SIDE\n')
 
 class Server:
 
