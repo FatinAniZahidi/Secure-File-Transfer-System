@@ -18,6 +18,41 @@ class Client:
         self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.s.connect((self.target_ip,int(self.target_port)))
 
+def main(self):
+        #verify a new user
+        New = input('\t\nWhich user are you? [ y - new user | n - existing user] :')
+        self.sock.send(New.encode())   #send input user to server
+        if New == 'y':   #if new user
+            username = input('\tEnter New Username : ')
+            self.sock.send(username.encode())
+
+            password = getpass.getpass('\tEnter New Password : ', stream=None)
+            self.sock.send(password.encode())
+
+            #register new user
+            register = self.sock.recv(1024)
+
+            if register.decode() == "continue":
+                print('\t\t\nPlease Re-enter Your Credential')
+
+                #login new registered user
+                username = input('\tEnter Username : ')
+                self.sock.send(username.encode())
+
+                password = getpass.getpass('\tEnter Password : ', stream=None)
+                self.sock.send(password.encode())
+
+                #if the username and password does not exist in the login.txt
+                login = self.sock.recv(1024)
+                if login.decode() == "Not-a-user":
+                    print("\tYour Credential Could Not Be Verified ! Connection will be terminate !")
+
+                    self.sock.shutdown(socket.SHUT_RDWR)
+                    self.sock.close()
+                    sys.exit()
+                else:
+                    print(login.decode())  #print welcome new user
+
     def main(self):
         while 1:
             file_name = input('Enter file name on server --> ')
