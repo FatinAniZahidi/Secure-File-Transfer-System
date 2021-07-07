@@ -1,26 +1,33 @@
-import socket
-import threading
+import sys
+import tqdm
 import os
+import threading
+import socket
+import time
 
 class Server:
+
+     #create socket (TCP Protocol)
     def __init__(self):
-        self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.accept_connections()
-    
+
+
     def accept_connections(self):
-        ip = socket.gethostbyname(socket.gethostname())
-        port = int(input('Enter desired port --> '))
+        ip = str(input('\tEnter Server Ip Address : '))
+        port = int(input('\tEnter Desired Port Number : '))
 
-        self.s.bind((ip,port))
-        self.s.listen(100)
-
-        print('Running on IP: '+ip)
-        print('Running on port: '+str(port))
+        self.sock.bind((ip,port))  #associate the socket with specific ip address and port number
+        self.sock.listen(100)  #server listen for incoming connection
+        print('\n')
 
         while 1:
-            c, addr = self.s.accept()
-            print(c)
-            
+            c, addr = self.sock.accept()   #accept connection rqest from the  client
+            print('\t------------------------------------------')
+            print('\tSuccessfully Connected to :' + addr[0])  #print client ip address
+            print('\t------------------------------------------')
+
+            #create thread
             threading.Thread(target=self.handle_client,args=(c,addr,)).start()
 
     def handle_client(self,c,addr):
