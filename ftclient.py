@@ -53,6 +53,27 @@ def main(self):
                 else:
                     print(login.decode())  #print welcome new user
 
+        else:   #if not a new user
+            print('\t\t\nPlease Enter Your Credential\n')
+            username = input('\tEnter Username : ')
+            self.sock.send(username.encode())
+
+            password = getpass.getpass('\tEnter Password : ', stream=None)
+            self.sock.send(password.encode())
+
+            #if username and password does not exist in login.txt
+            login = self.sock.recv(1024)
+            if login.decode() == "Not-a-user":
+                print("\tYour Credential Could Not Be Verified ! Connection will be terminate !")
+
+                self.sock.shutdown(socket.SHUT_RDWR)
+                self.sock.close()
+                sys.exit()
+            else:
+                print(login.decode())  #print welcome back
+        print('\n-----------------------------------------------------')
+        print("\t\n To Terminate The Connection, Enter 'exit'")
+        print('\n-----------------------------------------------------')
 
         while 1:
             #input requested file name
