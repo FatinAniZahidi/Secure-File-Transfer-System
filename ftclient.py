@@ -2,21 +2,21 @@ import socket
 import os
 
 class Client:
+
+    #create socket (TCP Protocol)
     def __init__(self):
-        self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+        self.sock = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         self.connect_to_server()
 
+    #create a connection to the server
     def connect_to_server(self):
-        self.target_ip = input('Enter ip --> ')
-        self.target_port = input('Enter port --> ')
+        self.target_ip = input(str('\tPlease Enter Server Ip Address : '))
+        self.target_port = input('\tPlease Enter Server Port Number : ')
 
-        self.s.connect((self.target_ip,int(self.target_port)))
+        #receive connection from server
+        self.sock.connect((self.target_ip,int(self.target_port)))
 
         self.main()
-
-    def reconnect(self):
-        self.s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-        self.s.connect((self.target_ip,int(self.target_port)))
 
 def main(self):
         #verify a new user
