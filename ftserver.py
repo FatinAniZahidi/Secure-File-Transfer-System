@@ -85,25 +85,26 @@ class Server:
                     #c.close()
 
 
-    def handle_client(self,c,addr):
-        data = c.recv(1024).decode()
-    
-        if not os.path.exists(data):
-            c.send("file-doesn't-exist".encode())
+        while 1:
+            #server received file name from server
+            data = c.recv(1024).decode()
 
-        else:
-            c.send("file-exists".encode())
-            print('Sending',data)
-            if data != '':
-                file = open(data,'rb')
-                data = file.read(1024)
-                while data:
-                    c.send(data)
+            if not os.path.exists(data):
+                c.send("No File!".encode())
+                sys.exit()
+                continue
+            else:
+                c.send("File Exist".encode())
+                print('\tSending...',data)
+
+                #server send file to the client
+                if data != '':
+                    file = open(data,'rb')
                     data = file.read(1024)
-
-                c.shutdown(socket.SHUT_RDWR)
-                c.close()
-                
+                    #//encrypted_data = f.encrypt(data)
+                    while data:
+                        c.send(data)
+                        data = file.read(1024)
+                continue
 
 server = Server()
-
