@@ -1,7 +1,20 @@
-import socket
+import socket #import socket library
 import os
+import tqdm
+import time
+import sys
+import getpass
+import emoji
 
 class Client:
+    print('\n******************************************************')
+    print('\n\tWelcome To Secure File Transfer System\t')
+    print('\n\t\tMade with Python\t\t')
+    txt = emoji.emojize(":snake:")
+    x = txt.center(45," ")
+    print(x)
+    print('\n******************************************************\n')
+    print('CLIENT SIDE\n')
 
     #create socket (TCP Protocol)
     def __init__(self):
